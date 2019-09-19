@@ -77,7 +77,7 @@ namespace Api.Data.Repository
 
         }
 
-        public Task<IEnumerable<T>> SelectAsync()
+        public async Task<IEnumerable<T>> SelectAsync()
         {
             try
             {
