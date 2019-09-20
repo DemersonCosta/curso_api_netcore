@@ -1,10 +1,11 @@
-﻿
-using Api.CrossCutting.DependencyInjection;
+﻿using Api.CrossCutting.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Application
 {
@@ -23,6 +24,22 @@ namespace Application
 
             ConfigureService.ConfigureDependenciesService(services);
             ConfigureRepository.ConfigureDependenciesRepository(services);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                new Info
+                {
+                    Title = "Curso de AspNetCore 2.2",
+                    Version = "v1",
+                    Description = "Exemplo de API REST criada com o ASP.NET Core",
+                    Contact = new Contact
+                    {
+                        Name = "Demerson Costa Ferreira",
+                        Url = "https://github.com/mfrinfo"
+                    }
+                });
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -33,6 +50,17 @@ namespace Application
             {
                 app.UseDeveloperExceptionPage();
             }
+            // Ativando middlewares para uso do Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto em AspNetCore 2.2");
+            });
+            // Redireciona o Link para o Swagger, quando acessar a rota principal
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
 
             app.UseMvc();
         }
