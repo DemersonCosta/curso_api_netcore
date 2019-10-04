@@ -34,6 +34,9 @@ namespace Api.Service.Services
         {
             return await _repository.DeleteAsync(id);
         }
-
+        public async Task<IEnumerable<UserEntity>> GetUsuarios()
+        {
+            return await _repository.GetUsuarios();
+        }
     }
 }

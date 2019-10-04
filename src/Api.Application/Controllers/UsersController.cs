@@ -18,7 +18,9 @@ namespace Api.Application.Controllers
             _service = service;
         }
 
-        [Authorize("Bearer")]
+
+        //[Authorize("Bearer")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
@@ -28,7 +30,7 @@ namespace Api.Application.Controllers
             }
             try
             {
-                return Ok(await _service.GetAll());
+                return Ok(await _service.GetUsuarios());
             }
             catch (ArgumentException e)
             {
@@ -54,6 +56,7 @@ namespace Api.Application.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
+
 
         [Authorize("Bearer")]
         [HttpPost]

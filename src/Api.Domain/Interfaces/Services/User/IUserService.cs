@@ -12,6 +12,7 @@ namespace Api.Domain.Interfaces.Services.User
         Task<UserEntity> Post(UserEntity user);
         Task<UserEntity> Put(UserEntity user);
         Task<bool> Delete(Guid id);
+        Task<IEnumerable<UserEntity>> GetUsuarios();
 
     }
 }

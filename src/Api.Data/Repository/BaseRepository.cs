@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Api.Data.Context;
 using Api.Domain.Entities;
@@ -108,7 +109,25 @@ namespace Api.Data.Repository
                 throw ex;
             }
             return item;
-
         }
+
+        public async Task<IEnumerable<T>> GetUsuarios()
+        {
+            List<T> list = new List<T>();
+            // Initialization.  
+            try
+            {
+                string sqlQuery = "EXEC [dbo].[ProcUsuarios]";
+                list = await _dataset.FromSql(sqlQuery).ToListAsync();
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return list;
+        }
+
     }
 }
